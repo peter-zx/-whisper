@@ -1,65 +1,75 @@
-/* 右栏容器（最大化预览空间） */
+/* static/css/right-section.css */
 .right-section {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    height: calc(100vh - 4rem); /* 自适应屏幕高度 */
+    height: calc(100vh - 4rem);
 }
 
-/* 合并的下载+历史卡片 */
 .right-section .download-history-card {
     overflow: hidden;
-    flex-shrink: 0; /* 不被压缩 */
+    flex-shrink: 0;
     padding: 1.5rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
-/* 下载按钮区域 */
+
 .download-buttons {
     margin-bottom: 1rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
 }
+
 .btn-download {
     padding: 0.6rem 1.2rem;
     border: none;
-    border-radius: 8px;
+    border-radius: 6px;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
     background: #48bb78;
     color: white;
-    margin: 0 0.3rem;
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-.btn-download.enabled {
-    opacity: 1;
-    cursor: pointer;
-}
-.btn-download.enabled:hover {
-    background: #38a169;
+    margin: 0 0.3rem 0.3rem 0;
 }
 
-/* 历史记录区域 */
+.btn-download:hover {
+    background: #38a169;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(72, 187, 120, 0.3);
+}
+
 .history-grid-container {
     margin-top: 1rem;
 }
+
 .history-title {
     font-size: 14px;
     color: #666;
     margin-bottom: 0.5rem;
+    font-weight: 500;
 }
+
 .history-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(2, 1fr);
     gap: 0.5rem;
     max-height: 120px;
-    overflow: hidden;
+    overflow-y: auto;
+    padding: 0.5rem;
+    background: #f9f9f9;
+    border-radius: 4px;
 }
+
 .history-grid-item {
     padding: 0.5rem;
 }
+
 .history-grid-btn {
     width: 100%;
     padding: 0.5rem 0;
@@ -69,28 +79,171 @@
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    transition: background 0.3s;
-}
-.history-grid-btn:hover {
-    background: #3182ce;
+    transition: all 0.2s ease;
 }
 
-/* 预览卡片（放大三倍高度） */
-.right-section .preview-card {
-    flex: 1; /* 占满所有剩余空间（放大三倍） */
-    overflow: hidden;
-    height: calc(300% - 2rem); /* 核心：高度放大三倍 */
+.history-grid-btn:hover {
+    background: #3182ce;
+    transform: scale(1.02);
 }
+
+.right-section .preview-card {
+    flex: 1;
+    overflow: hidden;
+    height: calc(300% - 2rem);
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 1.5rem;
+}
+
 .preview-content {
     width: 100%;
-    height: calc(100% - 4rem); /* 占满预览卡片 */
-    background: #f8f9fc;
+    height: calc(100% - 4rem);
+    background: #f9f9f9;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
-    padding: 1.5rem; /* 增加内边距 */
+    padding: 1.5rem;
     white-space: pre-wrap;
     color: #2d3748;
-    font-size: 15px; /* 放大字体 */
-    line-height: 1.8; /* 增加行高 */
-    overflow-y: auto; /* 仅此处保留滚动 */
+    font-size: 15px;
+    line-height: 1.8;
+    overflow-y: auto;
+}
+
+.srt-container {
+    font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+    line-height: 1.8;
+    color: #333;
+}
+
+.srt-block {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    transition: all 0.2s ease;
+}
+
+.srt-block:hover {
+    background: #f5f8ff;
+    padding: 10px;
+    border-radius: 4px;
+    margin-left: -10px;
+    margin-right: -10px;
+}
+
+.srt-index {
+    display: none;
+}
+
+.srt-timeline {
+    color: #2196F3;
+    font-size: 14px;
+    margin-bottom: 8px;
+    font-family: "Consolas", "Monaco", monospace;
+    font-weight: 500;
+}
+
+.srt-text {
+    color: #333;
+    font-size: 16px;
+    line-height: 1.6;
+    padding-left: 5px;
+    border-left: 3px solid #48bb78;
+}
+
+.loading {
+    color: #666;
+    font-size: 16px;
+    text-align: center;
+    padding: 50px 0;
+}
+
+.empty-result {
+    color: #999;
+    font-size: 16px;
+    text-align: center;
+    padding: 50px 0;
+}
+
+.error {
+    color: #e53e3e;
+    font-size: 16px;
+    text-align: center;
+    padding: 50px 0;
+}
+
+.txt-result {
+    line-height: 1.8;
+    font-size: 16px;
+}
+
+.preview-content {
+    scrollbar-width: thin;
+    scrollbar-color: #2196F3 #f5f5f5;
+}
+
+.preview-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.preview-content::-webkit-scrollbar-track {
+    background: #f5f5f5;
+    border-radius: 4px;
+}
+
+.preview-content::-webkit-scrollbar-thumb {
+    background-color: #2196F3;
+    border-radius: 4px;
+}
+
+.preview-content::-webkit-scrollbar-thumb:hover {
+    background-color: #1976D2;
+}
+
+@media (max-width: 1024px) {
+    .layout-container {
+        grid-template-columns: 1fr;
+    }
+    .right-section {
+        height: auto;
+    }
+    .history-grid {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+    }
+    .right-section .preview-card {
+        height: auto;
+        min-height: 600px;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 1rem;
+    }
+    .ad-modal {
+        max-width: 350px;
+    }
+    .download-buttons .btn-download {
+        margin: 0.3rem 0;
+        width: 100%;
+    }
+    .history-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .right-section .preview-card {
+        min-height: 400px;
+        padding: 1rem;
+    }
+    .preview-content {
+        font-size: 14px;
+        padding: 1rem;
+    }
+    .srt-timeline {
+        font-size: 13px;
+    }
+    .srt-text {
+        font-size: 15px;
+    }
 }

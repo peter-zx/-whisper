@@ -1,9 +1,7 @@
-from backend.app import app
-from backend.config import FLASK_HOST, FLASK_PORT, FLASK_DEBUG
+# run.py
+from backend.app import create_app
 
-if __name__ == "__main__":
-    app.run(
-        host=FLASK_HOST,
-        port=FLASK_PORT,
-        debug=FLASK_DEBUG
-    )
+app = create_app()
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, debug=True)
