@@ -1,0 +1,347 @@
+/* 全局重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Microsoft YaHei", sans-serif;
+}
+
+/* 页面背景（极简） */
+body {
+    background: #f5f7fa;
+    padding: 2rem;
+}
+
+/* 卡片通用样式（核心） */
+.card {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+    border: 1px solid #f0f0f0;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* 布局容器（取消大主区块，改用流式卡片） */
+.layout-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 40% 60%;
+    gap: 2rem;
+}
+
+/* 左栏：功能区（无滚动条） */
+.left-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+.left-section .card {
+    overflow: hidden; /* 取消滚动条 */
+}
+
+/* 右栏：预览区（最大化预览空间） */
+.right-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    height: calc(100vh - 4rem); /* 自适应屏幕高度 */
+}
+.right-section .download-card {
+    overflow: hidden; /* 取消滚动条 */
+    flex-shrink: 0; /* 不被压缩 */
+}
+/* 转录历史卡片（2行5列，最多10个） */
+.right-section .history-card {
+    overflow: hidden; /* 取消滚动条 */
+    flex-shrink: 0; /* 不被压缩 */
+}
+.history-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5列 */
+    grid-template-rows: repeat(2, 1fr);    /* 2行 */
+    gap: 0.5rem;
+    max-height: 120px; /* 限制高度，2行 */
+    overflow: hidden;  /* 超出10个隐藏 */
+}
+.history-grid-item {
+    padding: 0.5rem;
+}
+.history-grid-btn {
+    width: 100%;
+    padding: 0.5rem 0;
+    font-size: 12px;
+    background: #4299e1;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.history-grid-btn:hover {
+    background: #3182ce;
+}
+/* 预览卡片（最大化剩余空间） */
+.right-section .preview-card {
+    flex: 1; /* 占满所有剩余空间 */
+    overflow: hidden;
+}
+
+/* 卡片标题 */
+.card-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+/* 上传区域 */
+.upload-area {
+    border: 2px dashed #4299e1;
+    border-radius: 12px;
+    padding: 2rem 1rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.upload-area:hover {
+    background: #ebf8ff;
+}
+.upload-input {
+    display: none;
+}
+.upload-text {
+    font-size: 16px;
+    color: #4a5568;
+    margin-bottom: 0.5rem;
+}
+.file-name {
+    color: #4299e1;
+    font-size: 14px;
+}
+
+/* 表单控件（模型提示适配） */
+.form-group {
+    margin-bottom: 1.2rem;
+}
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #4a5568;
+    font-size: 14px;
+    font-weight: 500;
+}
+.form-control {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+.form-control:focus {
+    outline: none;
+    border-color: #4299e1;
+    box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.1);
+}
+
+/* 按钮样式 */
+.btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.btn-primary {
+    background: #4299e1;
+    color: white;
+    width: 100%;
+}
+.btn-primary:hover {
+    background: #3182ce;
+}
+.btn-download {
+    background: #48bb78;
+    color: white;
+    margin: 0 0.3rem;
+    padding: 0.6rem 1.2rem;
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+.btn-download.enabled {
+    opacity: 1;
+    cursor: pointer;
+}
+.btn-download.enabled:hover {
+    background: #38a169;
+}
+
+/* 进度条 */
+.progress-container {
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    background: #e2e8f0;
+    margin: 1.5rem 0 0.5rem;
+    overflow: hidden;
+}
+.progress-bar {
+    height: 100%;
+    background: #4299e1;
+    width: 0%;
+    transition: width 0.3s ease;
+}
+.progress-text {
+    text-align: center;
+    color: #718096;
+    font-size: 13px;
+    display: none;
+}
+
+/* 宣传区 */
+.promote-content {
+    text-align: center;
+    padding: 1rem 0;
+}
+.tech-desc {
+    font-size: 14px;
+    color: #718096;
+    margin-bottom: 1rem;
+}
+.qrcode-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+}
+.public-name {
+    font-size: 14px;
+    color: #2d3748;
+    font-weight: 500;
+}
+
+/* 预览内容（仅此处保留滚动条，最大化空间） */
+.preview-content {
+    width: 100%;
+    height: calc(100% - 4rem); /* 占满预览卡片剩余空间 */
+    background: #f8f9fc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1rem;
+    white-space: pre-wrap;
+    color: #2d3748;
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-y: auto; /* 仅此处保留滚动 */
+}
+
+/* 广告弹窗（限制尺寸+精准居中） */
+.ad-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9998;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.ad-modal {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    width: 90%;
+    max-width: 400px; /* 限制弹窗宽度 */
+    max-height: 80vh; /* 限制弹窗高度 */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+}
+.ad-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e8e8e8;
+}
+.ad-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2d3748;
+}
+.ad-close {
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: #718096;
+    cursor: pointer;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+.ad-close:hover {
+    background: #f7fafc;
+    color: #e53e3e;
+}
+.ad-img {
+    width: 100%;
+    max-height: 200px; /* 限制广告图高度 */
+    object-fit: contain;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+.ad-desc {
+    color: #718096;
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 1rem;
+}
+.ad-countdown {
+    font-size: 13px;
+    color: #718096;
+    text-align: center;
+}
+
+/* 响应式适配 */
+@media (max-width: 1024px) {
+    .layout-container {
+        grid-template-columns: 1fr;
+    }
+    .right-section {
+        height: auto;
+    }
+    .history-grid {
+        grid-template-columns: repeat(3, 1fr); /* 小屏3列 */
+        grid-template-rows: repeat(3, 1fr);    /* 小屏3行 */
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 1rem;
+    }
+    .ad-modal {
+        max-width: 350px;
+    }
+    .download-card .btn-download {
+        margin: 0.3rem 0;
+        width: 100%;
+    }
+    .history-grid {
+        grid-template-columns: repeat(2, 1fr); /* 超小屏2列 */
+    }
+}

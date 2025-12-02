@@ -1,0 +1,43 @@
+/* 平板适配 */
+@media (max-width: 1024px) {
+    .layout-container {
+        grid-template-columns: 1fr; /* 单列布局 */
+    }
+    .right-section {
+        height: auto; /* 取消高度限制 */
+    }
+    .history-grid {
+        grid-template-columns: repeat(3, 1fr); /* 3列 */
+        grid-template-rows: repeat(3, 1fr);    /* 3行 */
+    }
+    /* 预览区适配 */
+    .right-section .preview-card {
+        height: auto;
+        min-height: 600px; /* 平板端最小高度 */
+    }
+}
+
+/* 手机适配 */
+@media (max-width: 768px) {
+    body {
+        padding: 1rem; /* 减少内边距 */
+    }
+    .ad-modal {
+        max-width: 350px; /* 更小的弹窗 */
+    }
+    .download-buttons .btn-download {
+        margin: 0.3rem 0;
+        width: 100%; /* 下载按钮全屏宽 */
+    }
+    .history-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2列 */
+    }
+    /* 预览区手机适配 */
+    .right-section .preview-card {
+        min-height: 400px;
+    }
+    .preview-content {
+        font-size: 14px;
+        padding: 1rem;
+    }
+}

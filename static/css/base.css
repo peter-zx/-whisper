@@ -1,0 +1,42 @@
+/* 全局重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Microsoft YaHei", sans-serif;
+}
+
+/* 页面背景 */
+body {
+    background: #f5f7fa;
+    padding: 2rem;
+}
+
+/* 通用卡片样式 */
+.card {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+    border: 1px solid #f0f0f0;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* 核心布局容器 */
+.layout-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 40% 60%;
+    gap: 2rem;
+}
+
+/* 通用卡片标题 */
+.card-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e8e8e8;
+}

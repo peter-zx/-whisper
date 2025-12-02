@@ -1,0 +1,79 @@
+/* 广告弹窗遮罩 */
+.ad-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9998;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 弹窗容器（限制尺寸） */
+.ad-modal {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    width: 90%;
+    max-width: 400px;
+    max-height: 80vh;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 弹窗头部 */
+.ad-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e8e8e8;
+}
+.ad-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2d3748;
+}
+.ad-close {
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: #718096;
+    cursor: pointer;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+.ad-close:hover {
+    background: #f7fafc;
+    color: #e53e3e;
+}
+
+/* 弹窗内容 */
+.ad-img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: contain;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+.ad-desc {
+    color: #718096;
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 1rem;
+}
+.ad-countdown {
+    font-size: 13px;
+    color: #718096;
+    text-align: center;
+}

@@ -1,0 +1,96 @@
+/* 右栏容器（最大化预览空间） */
+.right-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    height: calc(100vh - 4rem); /* 自适应屏幕高度 */
+}
+
+/* 合并的下载+历史卡片 */
+.right-section .download-history-card {
+    overflow: hidden;
+    flex-shrink: 0; /* 不被压缩 */
+    padding: 1.5rem;
+}
+/* 下载按钮区域 */
+.download-buttons {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+.btn-download {
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: #48bb78;
+    color: white;
+    margin: 0 0.3rem;
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+.btn-download.enabled {
+    opacity: 1;
+    cursor: pointer;
+}
+.btn-download.enabled:hover {
+    background: #38a169;
+}
+
+/* 历史记录区域 */
+.history-grid-container {
+    margin-top: 1rem;
+}
+.history-title {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+.history-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 0.5rem;
+    max-height: 120px;
+    overflow: hidden;
+}
+.history-grid-item {
+    padding: 0.5rem;
+}
+.history-grid-btn {
+    width: 100%;
+    padding: 0.5rem 0;
+    font-size: 12px;
+    background: #4299e1;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.history-grid-btn:hover {
+    background: #3182ce;
+}
+
+/* 预览卡片（放大三倍高度） */
+.right-section .preview-card {
+    flex: 1; /* 占满所有剩余空间（放大三倍） */
+    overflow: hidden;
+    height: calc(300% - 2rem); /* 核心：高度放大三倍 */
+}
+.preview-content {
+    width: 100%;
+    height: calc(100% - 4rem); /* 占满预览卡片 */
+    background: #f8f9fc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1.5rem; /* 增加内边距 */
+    white-space: pre-wrap;
+    color: #2d3748;
+    font-size: 15px; /* 放大字体 */
+    line-height: 1.8; /* 增加行高 */
+    overflow-y: auto; /* 仅此处保留滚动 */
+}
