@@ -36,3 +36,8 @@ typing-inspection==0.4.2
 typing_extensions==4.15.0
 urllib3==2.5.0
 uvicorn==0.38.0
+Flask==2.3.3
+flask-cors==3.0.10
+openai-whisper==2.10.0
+opencc-python-reimplemented==0.6.1
+pydub==0.25.1

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Whisper 字幕生成器</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .upload-drag {
+      border: 2px dashed #cbd5e1;
+      transition: all 0.3s;
+    }
+    .upload-drag.drag-over {
+      border-color: #3b82f6;
+      background-color: #eff6ff;
+    }
+    .subtitle-line:hover { @apply bg-blue-50 cursor-pointer; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+  <!-- 弹窗广告 -->
+  <div id="adPopup" class="fixed bottom-4 right-4 bg-white shadow-lg rounded-lg p-4 max-w-xs hidden">
+    <div class="flex justify-between items-start">
+      <p class="text-sm">✨ 新功能预告：支持批量处理与AI润色！</p>
+      <button onclick="document.getElementById('adPopup').classList.add('hidden')" class="text-gray-500">&times;</button>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="bg-white shadow-sm py-3 px-6 flex justify-between items-center">
+    <h1 class="text-xl font-bold text-primary">Whisper 字幕生成器</h1>
+    <div class="flex items-center space-x-4">
+      <select id="languageSelect" class="text-sm border rounded px-2 py-1">
+        <option value="zh">简体中文</option>
+      </select>
+      <a href="https://github.com/peter-zx/-whisper" target="_blank" class="text-sm text-gray-600 hover:text-primary">GitHub</a>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto p-6 space-y-8">
+
+    <!-- 上传配置区 -->
+    <section class="bg-white p-6 rounded-xl shadow">
+      <h2 class="text-lg font-semibold mb-4">📁 上传与配置</h2>
+      <div id="dropZone" class="upload-drag rounded-lg p-8 text-center mb-4">
+        <p class="mb-2">拖拽音视频文件到此处，或</p>
+        <input type="file" id="fileInput" accept="audio/*,video/*" class="hidden" />
+        <button id="browseBtn" class="bg-primary text-white px-4 py-2 rounded hover:bg-blue-600">选择文件</button>
+        <p id="fileName" class="mt-2 text-sm text-gray-500"></p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block text-sm font-medium mb-1">模型选择</label>
+          <select id="modelSelect" class="w-full border rounded px-3 py-2">
+            <option value="base">Base（快速）</option>
+            <option value="small">Small</option>
+            <option value="medium">Medium</option>
+            <option value="large-v3" selected>Large-v3（高精度）</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">输出语言</label>
+          <select id="outputLang" class="w-full border rounded px-3 py-2">
+            <option value="auto">自动检测</option>
+            <option value="zh" selected>强制简体中文</option>
+          </select>
+        </div>
+      </div>
+
+      <button id="transcribeBtn" class="w-full bg-primary text-white py-2 rounded hover:bg-blue-600 disabled:opacity-50">
+        ▶️ 开始转录
+      </button>
+    </section>
+
+    <!-- 成果展示区 -->
+    <section class="bg-white p-6 rounded-xl shadow">
+      <h2 class="text-lg font-semibold mb-4">📺 成果展示</h2>
+      <div id="progressContainer" class="mb-4 hidden">
+        <div class="w-full bg-gray-200 rounded-full h-2">
+          <div id="progressBar" class="bg-green-500 h-2 rounded-full" style="width: 0%"></div>
+        </div>
+        <p id="progressText" class="text-sm text-gray-600 mt-1">正在处理...</p>
+      </div>
+
+      <div id="resultContainer" class="hidden">
+        <div class="mb-3 flex justify-between">
+          <span class="text-sm text-gray-500">点击字幕可跳转播放</span>
+          <button id="copyAllBtn" class="text-sm text-primary hover:underline">📋 复制全部</button>
+        </div>
+        <div id="subtitlesDisplay" class="bg-gray-50 p-4 rounded max-h-96 overflow-y-auto font-mono text-sm">
+          <!-- 动态插入字幕 -->
+        </div>
+      </div>
+
+      <div id="placeholderMessage" class="text-center text-gray-500 py-8">
+        转录结果将在此处显示...
+      </div>
+    </section>
+
+    <!-- 字幕下载区 -->
+    <section class="bg-white p-6 rounded-xl shadow">
+      <h2 class="text-lg font-semibold mb-4">📥 字幕下载</h2>
+      <div class="flex flex-wrap gap-3">
+        <button class="download-btn bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded text-sm">SRT 格式</button>
+        <button class="download-btn bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded text-sm">TXT 文本</button>
+        <button class="download-btn bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded text-sm">VTT 字幕</button>
+        <button class="download-btn bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded text-sm">JSON 数据</button>
+      </div>
+    </section>
+
+    <!-- 未来功能区 -->
+    <details class="bg-white p-6 rounded-xl shadow">
+      <summary class="cursor-pointer list-none font-semibold">➕ 未来新增功能（点击展开）</summary>
+      <ul class="mt-3 space-y-2 text-sm text-gray-600">
+        <li>• 批量处理多个文件</li>
+        <li>• AI 自动润色字幕</li>
+        <li>• 导出带硬字幕的视频</li>
+        <li>• 多语种实时翻译</li>
+      </ul>
+    </details>
+
+  </main>
+
+  <footer class="text-center py-6 text-gray-500 text-sm">
+    © 2025 peter-zx | 
+    <a href="https://github.com/peter-zx/-whisper" target="_blank" class="text-primary hover:underline">开源项目</a> | 
+    仅用于学习与非商业用途
+  </footer>
+
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const browseBtn = document.getElementById('browseBtn');
+    const dropZone = document.getElementById('dropZone');
+    const fileName = document.getElementById('fileName');
+    const transcribeBtn = document.getElementById('transcribeBtn');
+    const progressContainer = document.getElementById('progressContainer');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    const resultContainer = document.getElementById('resultContainer');
+    const subtitlesDisplay = document.getElementById('subtitlesDisplay');
+    const placeholderMessage = document.getElementById('placeholderMessage');
+    const copyAllBtn = document.getElementById('copyAllBtn');
+    const adPopup = document.getElementById('adPopup');
+
+    // 文件选择
+    browseBtn.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', () => updateFileName());
+
+    function updateFileName() {
+      if (fileInput.files.length > 0) {
+        fileName.textContent = `已选择：${fileInput.files[0].name}`;
+        transcribeBtn.disabled = false;
+      } else {
+        fileName.textContent = '';
+        transcribeBtn.disabled = true;
+      }
+    }
+
+    // 拖拽
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('drag-over');
+    });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('drag-over');
+      if (e.dataTransfer.files.length) {
+        fileInput.files = e.dataTransfer.files;
+        updateFileName();
+      }
+    });
+
+    // 开始转录
+    transcribeBtn.addEventListener('click', async () => {
+      if (!fileInput.files.length) return alert('请先选择文件！');
+      
+      progressContainer.classList.remove('hidden');
+      resultContainer.classList.add('hidden');
+      placeholderMessage.classList.add('hidden');
+
+      const formData = new FormData();
+      formData.append('file', fileInput.files[0]);
+      formData.append('model', document.getElementById('modelSelect').value);
+      formData.append('language', document.getElementById('outputLang').value);
+
+      try {
+        let progress = 0;
+        const interval = setInterval(() => {
+          progress += 5;
+          progressBar.style.width = progress + '%';
+          progressText.textContent = `处理中... ${progress}%`;
+          if (progress >= 100) clearInterval(interval);
+        }, 150);
+
+        const res = await fetch('/transcribe', {
+          method: 'POST',
+          body: formData
+        });
+
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+
+        showResult(data.segments, data.download_base, data.temp_dir);
+      } catch (err) {
+        alert('❌ 错误：' + err.message);
+        progressContainer.classList.add('hidden');
+        placeholderMessage.classList.remove('hidden');
+      }
+    });
+
+    function showResult(segments, baseName, tempDir) {
+      progressContainer.classList.add('hidden');
+      resultContainer.classList.remove('hidden');
+
+      subtitlesDisplay.innerHTML = segments.map(seg => `
+        <div class="subtitle-line p-2 border-b border-gray-100" data-start="${seg.start}">
+          <span class="text-blue-600">[${seg.start.toFixed(2)} → ${seg.end.toFixed(2)}]</span><br>
+          <span>${seg.text}</span>
+        </div>
+      `).join('');
+
+      // 显示广告
+      setTimeout(() => adPopup.classList.remove('hidden'), 2000);
+
+      // 下载按钮绑定
+      document.querySelectorAll('.download-btn').forEach(btn => {
+        btn.onclick = () => {
+          const format = btn.textContent.trim().toLowerCase();
+          window.open(`/download/${format}?temp_dir=${encodeURIComponent(tempDir)}&base_name=${encodeURIComponent(baseName)}`, '_blank');
+        };
+      });
+
+      // 复制全部
+      copyAllBtn.onclick = () => {
+        const text = segments.map(s => `${s.text}`).join('\n\n');
+        navigator.clipboard.writeText(text).then(() => {
+          alert('✅ 字幕已复制！');
+        });
+      };
+    }
+
+    // 防止默认行为
+    window.addEventListener('beforeunload', () => {
+      const tempDirs = document.querySelectorAll('[data-temp-dir]');
+      tempDirs.forEach(el => {
+        const dir = el.dataset.tempDir;
+        if (dir && fs.existsSync(dir)) {
+          fs.rmSync(dir, { recursive: true });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
