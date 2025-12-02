@@ -8,86 +8,65 @@
 </head>
 <body>
 
-  <!-- 赞助弹窗（全局） -->
-  <div id="sponsorModal" class="modal">
-    <div class="modal-content">
-      <span class="close-btn" onclick="closeSponsor()">&times;</span>
-      <h2>感谢赞助人</h2>
-      <p>服务得以存续，全靠社区支持 ❤️</p>
-      <img src="/static/assets/sponsor_placeholder.png" alt="赞助位" style="max-width:100%; margin-top:15px;">
-    </div>
+  <!-- 顶部标题 -->
+  <div class="page-header">
+    <h1>Whisper 字幕工坊</h1>
+    <p class="slogan">AI 语音转字幕 · 本地部署 · 隐私安全</p>
   </div>
 
-  <!-- 大背景 -->
-  <div class="background">
-    <!-- 大主区块（卡片容器） -->
-    <div class="main-panel">
-      <header class="panel-header">
-        <h1>Whisper 字幕工坊</h1>
-        <p class="slogan">AI 语音转字幕 · 本地部署 · 隐私安全</p>
-      </header>
+  <!-- 主容器 -->
+  <div class="container">
+    <!-- 左侧控制区 -->
+    <div class="control-panel">
+      <div class="card">
+        <h3>使用配置</h3>
+        <div class="card-content">
+          <input type="file" id="fileInput" accept=".mp3,.wav,.m4a,.flac,.ogg,.webm,.mp4" style="display:none;" />
+          <button id="browseBtn">📁 选择文件</button>
+          <div id="fileName" class="file-name"></div>
 
-      <!-- 主内容：左右分栏 -->
-      <div class="main-content">
-        <!-- 左栏：功能区 -->
-        <div class="left-column">
-          <!-- 上区：70% - 上传与控制 -->
-          <div class="control-card">
-            <h3>上传与设置</h3>
-            <div class="upload-area">
-              <input type="file" id="fileInput" accept=".mp3,.wav,.m4a,.flac,.ogg,.webm,.mp4" style="display:none;" />
-              <button id="browseBtn" class="btn-secondary">📁 选择文件</button>
-              <div id="fileName" class="file-name"></div>
-            </div>
-
-            <div class="options">
-              <label>模型：
-                <select id="model">
-                  <option value="turbo">turbo（最快）</option>
-                  <option value="small">small</option>
-                  <option value="medium">medium</option>
-                  <option value="large">large</option>
-                </select>
-              </label>
-              <label>语言：<input type="text" id="language" placeholder="自动检测" /></label>
-              <label>
-                任务：
-                <select id="task">
-                  <option value="transcribe">转录（原语言）</option>
-                  <option value="translate">翻译成英文</option>
-                </select>
-              </label>
-            </div>
-
-            <button id="startBtn" class="btn-primary">▶ 开始转录</button>
-            <div class="status" id="status">等待上传...</div>
+          <div class="options">
+            <label>模型：
+              <select id="model">
+                <option value="turbo">turbo（最快）</option>
+                <option value="small">small</option>
+                <option value="medium">medium</option>
+                <option value="large">large</option>
+              </select>
+            </label>
+            <label>语言：<input type="text" id="language" placeholder="自动检测" /></label>
+            <label>
+              任务：
+              <select id="task">
+                <option value="transcribe">转录（原语言）</option>
+                <option value="translate">翻译成英文</option>
+              </select>
+            </label>
           </div>
 
-          <!-- 下区：30% - 宣传区 -->
-          <div class="promo-card">
-            <h3>关于作者</h3>
-            <div class="promo-content">
-              <strong>AIGC散修·竹相</strong><br>
-              <small>只分享验证可行的前沿技术<br>（因为热爱所以发电）</small>
-              <div class="qrcode">
-                <img src="/static/assets/qrcode.png" alt="公众号二维码">
-                <div class="qrcode-label">扫码关注公众号</div>
-              </div>
-            </div>
-          </div>
+          <button id="startBtn" class="btn-primary">▶ 开始转录</button>
+          <div id="status" class="status">等待上传...</div>
         </div>
+      </div>
 
-        <!-- 右栏：预览区 -->
-        <div class="right-column">
-          <div class="download-bar" id="downloadBar" style="display:none;">
-            <h3>字幕下载</h3>
+      <div class="card">
+        <h3>输出与历史</h3>
+        <div class="card-content">
+          <div id="downloadSection" style="display:none;">
+            <h4>字幕下载</h4>
             <div id="downloadButtons"></div>
           </div>
-          <div class="preview-box">
-            <div id="resultText" class="result-text">转录结果将显示在这里...</div>
+          <div id="historySection">
+            <h4>历史记录</h4>
+            <p class="hint">暂无历史记录</p>
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- 右侧预览区 -->
+    <div class="preview-area">
+      <div id="resultText" class="result-text">转录结果将显示在这里...</div>
     </div>
   </div>
 

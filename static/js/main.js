@@ -2,12 +2,11 @@
 
 let selectedFile = null;
 
-// 文件选择按钮
+// 文件选择
 document.getElementById('browseBtn').addEventListener('click', () => {
   document.getElementById('fileInput').click();
 });
 
-// 监听文件选择
 document.getElementById('fileInput').addEventListener('change', (e) => {
   const file = e.target.files[0];
   selectedFile = file;
@@ -20,7 +19,7 @@ document.getElementById('fileInput').addEventListener('change', (e) => {
   }
 });
 
-// 开始转录按钮
+// 开始转录
 document.getElementById('startBtn').addEventListener('click', async () => {
   if (!selectedFile) {
     alert('❌ 请先选择一个音频或视频文件');
@@ -61,26 +60,27 @@ document.getElementById('startBtn').addEventListener('click', async () => {
         resultDiv.appendChild(line);
       });
     } else {
-      // fallback to plain text
       resultDiv.innerText = data.text || '无转录结果';
     }
 
-    // === 显示下载按钮 ===
-    const downloadBar = document.getElementById('downloadBar');
+    // === 显示下载按钮（新结构）===
+    const downloadSection = document.getElementById('downloadSection');
     const downloadButtons = document.getElementById('downloadButtons');
     downloadButtons.innerHTML = '';
 
-    data.available_formats.forEach(fmt => {
-      const btn = document.createElement('button');
-      btn.className = 'btn-download';
-      btn.innerText = `下载 .${fmt}`;
-      btn.onclick = () => {
-        window.location.href = `/api/download/${data.filename_base}/${fmt}`;
-      };
-      downloadButtons.appendChild(btn);
-    });
+    if (data.available_formats && data.filename_base) {
+      data.available_formats.forEach(fmt => {
+        const btn = document.createElement('button');
+        btn.className = 'btn-download';
+        btn.innerText = `下载 .${fmt}`;
+        btn.onclick = () => {
+          window.location.href = `/api/download/${data.filename_base}/${fmt}`;
+        };
+        downloadButtons.appendChild(btn);
+      });
+      downloadSection.style.display = 'block';
+    }
 
-    downloadBar.style.display = 'block';
     statusEl.innerText = '✅ 转录完成！';
 
   } catch (err) {
@@ -90,7 +90,7 @@ document.getElementById('startBtn').addEventListener('click', async () => {
   }
 });
 
-// 赞助弹窗（可选）
+// 关闭赞助弹窗
 function closeSponsor() {
   document.getElementById('sponsorModal').style.display = 'none';
 }
@@ -103,3 +103,8 @@ function formatTimestamp(seconds) {
   const ms = Math.floor((seconds % 1) * 1000).toString().padStart(3, '0');
   return `${h}:${m}:${s}.${ms}`;
 }
+
+// 页面加载时显示赞助弹窗
+window.addEventListener('load', () => {
+  document.getElementById('sponsorModal').style.display = 'flex';
+});
